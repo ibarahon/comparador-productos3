@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-display: swap;
+    text-rendering: optimizeSpeed;
+  }
+  
+  :focus-visible {
+    outline: 2px solid theme('colors.blue.500');
+    outline-offset: 2px;
+  }
+  
+  @media (max-width: 768px) {
+    html {
+      font-size: 14px;
+    }
+  }
+}
+
+@layer components {
+  .mobile-container {
+    @apply px-4 w-full mx-auto;
+    max-width: 100%;
+  }
+  
+  .desktop-container {
+    @apply px-6 w-full mx-auto;
+    max-width: 1280px;
+  }
+  
+  .product-card {
+    @apply bg-white rounded-lg shadow-md transition-shadow duration-300;
+  }
+  
+  .product-card:hover {
+    @apply shadow-lg;
+  }
+  
+  .product-image {
+    @apply w-full h-full object-contain;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .btn {
+    @apply px-4 py-2 rounded-md font-medium transition-colors duration-200;
+  }
+  
+  .btn-primary {
+    @apply bg-blue-600 text-white hover:bg-blue-700;
+  }
+  
+  .btn-secondary {
+    @apply bg-white border border-gray-300 text-gray-700 hover:bg-gray-50;
+  }
+  
+  .input {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+  }
+}
+
+@layer utilities {
+  .text-responsive {
+    font-size: clamp(0.875rem, 2vw, 1rem);
+  }
+  
+  .heading-responsive {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+  }
+  
+  .grid-responsive {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+}
