@@ -1,61 +1,80 @@
 import React from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { PlatformBadge } from '../ui/PlatformBadge';
-import { RatingStars } from '../ui/RatingStars';
-import { PriceDisplay } from '../ui/PriceDisplay';
 
 interface ProductCardProps {
-  product: {
-    id: string;
-    name: string;
-    platform: string;
-    price: {
-      current: number;
-      original?: number;
-      currency: string;
-    };
-    ratings: {
-      average: number;
-      count: number;
-    };
-    images: {
-      main: string;
-    };
-  };
+  id: string;
+  name: string;
+  price: number;
+  image?: string;
+  rating?: number;
+  platform?: string;
+  description?: string;
+  onCompare?: (id: string) => void;
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({
+  id,
+  name,
+  price,
+  image,
+  rating,
+  platform,
+  description,
+  onCompare
+}: ProductCardProps) {
   return (
-    <Link href={`/producto/${product.id}`}>
-      <div className="product-card p-4 h-full flex flex-col">
-        <div className="relative mb-4">
-          <PlatformBadge platform={product.platform} className="absolute top-2 left-2 z-10" />
-          <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-100">
-            <Image 
-              src={product.images.main} 
-              alt={product.name}
-              width={300}
-              height={300}
-              className="product-image"
-            />
-          </div>
-        </div>
-        <div className="flex-grow">
-          <h3 className="text-sm font-medium text-gray-900 line-clamp-2">{product.name}</h3>
-          <div className="mt-2 flex items-center">
-            <RatingStars rating={product.ratings.average} />
-            <span className="ml-1 text-xs text-gray-500">({product.ratings.count})</span>
-          </div>
-        </div>
-        <div className="mt-4">
-          <PriceDisplay 
-            current={product.price.current} 
-            original={product.price.original} 
-            currency={product.price.currency} 
+    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+      {image && (
+        <div className="aspect-w-16 aspect-h-9">
+          <img
+            src={image}
+            alt={name}
+            className="w-full h-48 object-cover"
           />
         </div>
+      )}
+      <div className="p-4">
+        <div className="flex justify-between items-start mb-2">
+          <h3 className="text-lg font-semibold text-gray-900 truncate">
+            {name}
+          </h3>
+          {platform && (
+            <span className="ml-2 px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded">
+              {platform}
+            </span>
+          )}
+        </div>
+        
+        {description && (
+          <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+            {description}
+          </p>
+        )}
+        
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <span className="text-2xl font-bold text-green-600">
+              ${price.toFixed(2)}
+            </span>
+            {rating && (
+              <div className="flex items-center">
+                <span className="text-yellow-400">★</span>
+                <span className="text-sm text-gray-600 ml-1">
+                  {rating.toFixed(1)}
+                </span>
+              </div>
+            )}
+          </div>
+          
+          {onCompare && (
+            <button
+              onClick={() => onCompare(id)}
+              className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+            >
+              Comparar
+            </button>
+          )}
+        </div>
       </div>
-    </Link>
+    </div>
   );
 }
